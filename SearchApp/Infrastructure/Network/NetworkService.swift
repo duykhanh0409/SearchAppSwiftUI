@@ -74,6 +74,8 @@ class NetworkingManager {
         var request = URLRequest(url: url)
         request.httpMethod = method
         
+        
+        
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { element -> Data in
                 guard let response = element.response as? HTTPURLResponse,
