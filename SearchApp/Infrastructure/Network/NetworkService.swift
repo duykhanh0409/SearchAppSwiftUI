@@ -65,16 +65,7 @@ class NetworkingManager {
             .eraseToAnyPublisher()
     }
     
-    static func fetchData(from urlString: String, method: String = "GET") -> AnyPublisher<Data, Error> {
-        
-        guard let url = URL(string: urlString) else {
-            return Fail(error: NetworkingError.invalidURL).eraseToAnyPublisher()
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        
-        
+    static func fetchData(from request: URLRequest, method: String = "GET") -> AnyPublisher<Data, Error> {
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { element -> Data in
