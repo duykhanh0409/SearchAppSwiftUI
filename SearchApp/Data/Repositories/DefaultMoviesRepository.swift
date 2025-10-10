@@ -6,15 +6,34 @@
 //
 
 import Foundation
+import Combine
 
 final class DefaultMoviesRepository {
+    private let fetchDataPublisher: ()-> AnyPublisher<[MoviesPage], Error>
+    
+    init(
+        fetchDataPublisher: @escaping () -> AnyPublisher<[MoviesPage], Error>
+    ) {
+        self.fetchDataPublisher = fetchDataPublisher
+    }
     
 }
 
 extension DefaultMoviesRepository: MoviesRepository {
-    func fetchMoviesList() {
-        // ở repository sẽ tương tác trực tiếp với API manager và return về 1 cái publisher(), ngày mai cần thêm các params tương tứng vào
+    
+    func fetchMoviesList(query: MovieQuery, page: Int) -> AnyPublisher<[MoviesPage], any Error> {
+        
+        let requestDTO = MoviesRequestDTO(query: query.query, page: page)
+        let endpoint = APIEndpoints.getMovies(with: requestDTO)
+        
+        return fetchDataPublisher()
     }
+
+
+
+//    func fetch {
+//        // ở repository sẽ tương tác trực tiếp với API manager và return về 1 cái publisher(), ngày mai cần thêm các params tương tứng vào
+//    }
 }
 
 

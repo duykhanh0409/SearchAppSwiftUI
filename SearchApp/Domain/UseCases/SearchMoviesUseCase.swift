@@ -6,12 +6,24 @@
 //
 
 import Foundation
+import Combine
+
+struct SearchMoviesUseCaseRequestValue {
+    let query: MovieQuery
+    let page: Int
+}
 
 protocol SearchMoviesUseCase {
-    func fetch()
+    func execute(
+        requestValue: SearchMoviesUseCaseRequestValue,
+    )
 }
 
 final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
+  
+
+    @Published var result: (photos: [MoviesPage]?, error: String?) = (nil, nil)
+    private var moviesSubscription: AnyCancellable?
     
     private let moviesRepository: MoviesRepository
     
@@ -20,24 +32,21 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     }
     
     
-    func fetch() {
-        // ở đây sẽ call dóng photoService từng làm, rồi publish data qua viewModel
-//        moviesRepository.fetchMoviesList() ở đây sẽ làm để 
+    func execute(requestValue: SearchMoviesUseCaseRequestValue) {
+        moviesRepository
+            .fetchMoviesList(query: requestValue.query, page: requestValue.page)
+            .sink{ [weak self] completion in
+                switch completion {
+                case .failure(let error):
+                    self?.result = (nil, error.localizedDescription)
+                default:
+                    break
+                }
+            } receiveValue: { [weak self] dataResponse in
+                self?.result = (dataResponse, nil)
+                self?.moviesSubscription?.cancel()
+            }
+
     }
+
 }
-
-
-//func fetchPhotos() {
-//    photosSubscription = fetchDataPublisher()
-//        .sink(receiveCompletion: { [weak self] completion in
-//            switch completion {
-//            case .failure(let error):
-//                self?.result = (nil, error.localizedDescription)
-//            default:
-//                break
-//            }
-//        }, receiveValue: { [weak self] dataResponse in
-//            self?.result = (dataResponse, nil)
-//            self?.photosSubscription?.cancel()
-//        })
-//}

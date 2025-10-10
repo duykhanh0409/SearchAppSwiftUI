@@ -6,9 +6,16 @@
 //
 
 import Foundation
+import Combine
 
+protocol Cancellable {
+    func cancel()
+}
 
 protocol MoviesRepository {
     
-    func fetchMoviesList()
+    func fetchMoviesList(
+        query: MovieQuery,
+        page: Int,
+    ) -> AnyPublisher<[MoviesPage], Error>
 }
