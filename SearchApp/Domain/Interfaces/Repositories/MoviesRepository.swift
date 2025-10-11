@@ -17,5 +17,5 @@ protocol MoviesRepository {
     func fetchMoviesList(
         query: MovieQuery,
         page: Int,
-    ) -> AnyPublisher<[MoviesPage], Error>
+    ) -> AnyPublisher<MoviesPage, Error>
 }

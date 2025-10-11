@@ -9,10 +9,10 @@ import Foundation
 import Combine
 
 final class DefaultMoviesRepository {
-    private let fetchDataPublisher: ()-> AnyPublisher<[MoviesPage], Error>
+    private let fetchDataPublisher: ()-> AnyPublisher<MoviesPage, Error>
     
     init(
-        fetchDataPublisher: @escaping () -> AnyPublisher<[MoviesPage], Error>
+        fetchDataPublisher: @escaping () -> AnyPublisher<MoviesPage, Error>
     ) {
         self.fetchDataPublisher = fetchDataPublisher
     }
@@ -21,7 +21,7 @@ final class DefaultMoviesRepository {
 
 extension DefaultMoviesRepository: MoviesRepository {
     
-    func fetchMoviesList(query: MovieQuery, page: Int) -> AnyPublisher<[MoviesPage], any Error> {
+    func fetchMoviesList(query: MovieQuery, page: Int) -> AnyPublisher<MoviesPage, any Error> {
         
         let requestDTO = MoviesRequestDTO(query: query.query, page: page)
         let endpoint = APIEndpoints.getMovies(with: requestDTO)

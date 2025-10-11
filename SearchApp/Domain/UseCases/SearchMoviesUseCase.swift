@@ -22,7 +22,7 @@ protocol SearchMoviesUseCase {
 final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
   
 
-    @Published var result: (photos: [MoviesPage]?, error: String?) = (nil, nil)
+    @Published var result: (movies: MoviesPage?, error: String?) = (nil, nil)
     private var moviesSubscription: AnyCancellable?
     
     private let moviesRepository: MoviesRepository
@@ -33,7 +33,7 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     
     
     func execute(requestValue: SearchMoviesUseCaseRequestValue) {
-        moviesRepository
+        moviesSubscription = moviesRepository
             .fetchMoviesList(query: requestValue.query, page: requestValue.page)
             .sink{ [weak self] completion in
                 switch completion {
@@ -44,7 +44,6 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
                 }
             } receiveValue: { [weak self] dataResponse in
                 self?.result = (dataResponse, nil)
-                self?.moviesSubscription?.cancel()
             }
 
     }
