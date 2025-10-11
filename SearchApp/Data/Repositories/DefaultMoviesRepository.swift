@@ -9,14 +9,11 @@ import Foundation
 import Combine
 
 final class DefaultMoviesRepository {
-    private let fetchDataPublisher: ()-> AnyPublisher<MoviesPage, Error>
     private let dataTransferService: DataTransferService
     
     init(
-        fetchDataPublisher: @escaping () -> AnyPublisher<MoviesPage, Error>,
         dataTransferService: DataTransferService
     ) {
-        self.fetchDataPublisher = fetchDataPublisher
         self.dataTransferService = dataTransferService
     }
     

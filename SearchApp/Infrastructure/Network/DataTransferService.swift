@@ -14,7 +14,7 @@ protocol DataTransferService {
     ) -> AnyPublisher<E.Response, Error> where E.Response: Decodable
 }
 
-final class DefaultDataTransferService {
+final class DefaultDataTransferService: DataTransferService {
     private let networkService: NetworkingManager
     
     init(networkService: NetworkingManager) {
