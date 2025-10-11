@@ -8,25 +8,39 @@
 import Foundation
 import Combine
 
-class NetworkingManager {
+enum NetworkingError: Equatable, LocalizedError {
+    case invalidURL
+    case badResponse(statusCode: Int)
+    case unknown
     
-    enum NetworkingError: Equatable, LocalizedError {
-        case invalidURL
-        case badResponse(statusCode: Int)
-        case unknown
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidURL:
-                return "The provided URL is invalid."
-            case .badResponse(let code):
-                return "Bad response from server. Status code: \(code)"
-            case .unknown:
-                return "An unknown error occurred."
-            }
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "The provided URL is invalid."
+        case .badResponse(let code):
+            return "Bad response from server. Status code: \(code)"
+        case .unknown:
+            return "An unknown error occurred."
         }
     }
+}
+
+
+class NetworkingManager {
     
+    private let config: NetworkConfigurable
+
+    
+    init(
+        config: NetworkConfigurable,
+      
+    ) {
+        self.config = config
+       
+    }
+    
+    
+
     // MARK: - New method: fetch with cache + live data
     static func fetchWithCache(from urlString: String, method: String = "GET") -> AnyPublisher<Data, Error> {
         guard let url = URL(string: urlString) else {
@@ -65,7 +79,7 @@ class NetworkingManager {
             .eraseToAnyPublisher()
     }
     
-    static func fetchData(from request: URLRequest, method: String = "GET") -> AnyPublisher<Data, Error> {
+    func fetchData(from request: URLRequest, method: String = "GET") -> AnyPublisher<Data, Error> {
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { element -> Data in
@@ -90,3 +104,17 @@ class NetworkingManager {
     }
 }
 
+
+extension NetworkingManager {
+    
+    func request(
+        endpoint: Requestable,
+    ) -> AnyPublisher<Data, Error>  {
+        do {
+            let urlRequest = try endpoint.urlRequest(with: config)
+            return fetchData(from: urlRequest)
+        } catch {
+            return Fail(error: error).eraseToAnyPublisher()
+        }
+    }
+}

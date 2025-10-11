@@ -28,6 +28,6 @@ final class DefaultMovieListViewModel {
     
     func fetchMovie() {
         searchMoviesUseCase
-            .execute(requestValue: .init(query: .init(query: ""), page: 1))
+            .execute(requestValue: .init(query: .init(query: "khanh"), page: 1))
     }
 }

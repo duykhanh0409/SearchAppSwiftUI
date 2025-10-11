@@ -10,11 +10,14 @@ import Combine
 
 final class DefaultMoviesRepository {
     private let fetchDataPublisher: ()-> AnyPublisher<MoviesPage, Error>
+    private let dataTransferService: DataTransferService
     
     init(
-        fetchDataPublisher: @escaping () -> AnyPublisher<MoviesPage, Error>
+        fetchDataPublisher: @escaping () -> AnyPublisher<MoviesPage, Error>,
+        dataTransferService: DataTransferService
     ) {
         self.fetchDataPublisher = fetchDataPublisher
+        self.dataTransferService = dataTransferService
     }
     
 }
@@ -26,7 +29,9 @@ extension DefaultMoviesRepository: MoviesRepository {
         let requestDTO = MoviesRequestDTO(query: query.query, page: page)
         let endpoint = APIEndpoints.getMovies(with: requestDTO)
         
-        return fetchDataPublisher()
+        return dataTransferService.request(with: endpoint)
+            .map { $0.toDomain() }
+            .eraseToAnyPublisher()
     }
 
 
