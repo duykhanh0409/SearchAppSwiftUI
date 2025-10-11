@@ -5,7 +5,7 @@
 //  Created by Khanh Nguyen on 11/10/25.
 //
 
-import Foundation
+import SwiftUI
 
 final class AppFlowCoordinator {
     private let appDIContainer: AppDIContainer
@@ -14,7 +14,8 @@ final class AppFlowCoordinator {
         self.appDIContainer = appDIContainer
     }
     
-    func start() {
+    func start() -> some View {
         let movieSceneDIContainer = appDIContainer.makeMoviesSceneDIContainer()
+        return movieSceneDIContainer.makeMoviesListView()
     }
 }

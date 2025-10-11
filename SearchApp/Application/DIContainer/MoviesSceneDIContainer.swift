@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 final class MoviesSceneDIContainer {
     
@@ -28,8 +29,17 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Use Cases
-    func makeSearchMoviesUseCase() -> SearchMoviesUseCase {
+    func makeSearchMoviesUseCase() -> DefaultSearchMoviesUseCase {
         DefaultSearchMoviesUseCase(moviesRepository: makeMoviesRepository())
+    }
+    
+    // MARK: - Movies List
+    func makeMoviesListViewModel() -> DefaultMovieListViewModel {
+        DefaultMovieListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase())
+    }
+    
+    func makeMoviesListView() -> MoviesListView {
+        MoviesListView(viewModel: makeMoviesListViewModel())
     }
     
 }

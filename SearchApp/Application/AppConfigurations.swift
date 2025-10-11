@@ -9,7 +9,7 @@ import Foundation
 
 final class AppConfigurations {
     lazy var apikey: String = {
-        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "Apikey") as? String else {
+        guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "ApiKey") as? String else {
             fatalError("Apikey must not be empty in plist")
         }
         

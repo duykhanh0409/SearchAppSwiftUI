@@ -26,7 +26,10 @@ final class AppDIContainer {
         )
     }()
     
-    func makeMoviesSceneDIContainer() {
-        
+    func makeMoviesSceneDIContainer() -> MoviesSceneDIContainer {
+        let dependencies = MoviesSceneDIContainer.Dependencies(
+            apiDataTransferService: apiDataTransferService
+        )
+        return MoviesSceneDIContainer(dependencies: dependencies)
     }
 }

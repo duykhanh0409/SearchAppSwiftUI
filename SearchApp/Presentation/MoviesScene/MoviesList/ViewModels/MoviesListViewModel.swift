@@ -10,7 +10,10 @@ import Combine
 
 @Observable
 final class DefaultMovieListViewModel {
-    var movies: MoviesPage?
+    var movies: [Movie] = []
+    var errorMessage: String?
+    var isLoading: Bool = false
+    
     private let searchMoviesUseCase: DefaultSearchMoviesUseCase
     private var cancellables = Set<AnyCancellable>()
     
@@ -20,14 +23,22 @@ final class DefaultMovieListViewModel {
     }
     
     private func addSubscripber() {
-        searchMoviesUseCase.$result.sink { (movies: MoviesPage?, error: String?) in
-            self.movies = movies
+        searchMoviesUseCase.$result.sink { [weak self] (moviesPage: MoviesPage?, error: String?) in
+            self?.isLoading = false
+            if let error = error {
+                self?.errorMessage = error
+                self?.movies = []
+            } else if let moviesPage = moviesPage {
+                self?.movies = moviesPage.movies
+                self?.errorMessage = nil
+            }
         }
         .store(in: &cancellables)
     }
     
     func fetchMovie() {
+        isLoading = true
         searchMoviesUseCase
-            .execute(requestValue: .init(query: .init(query: "khanh"), page: 1))
+            .execute(requestValue: .init(query: .init(query: "marvel"), page: 1))
     }
 }

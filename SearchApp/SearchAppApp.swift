@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct SearchAppApp: App {
+    // Initialize DI Container (equivalent to AppDelegate setup)
+    private let appDIContainer = AppDIContainer()
+    private let appFlowCoordinator: AppFlowCoordinator
+    
+    init() {
+        self.appFlowCoordinator = AppFlowCoordinator(appDIContainer: appDIContainer)
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            appFlowCoordinator.start()
         }
     }
 }
