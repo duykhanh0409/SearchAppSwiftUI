@@ -16,13 +16,15 @@ struct SearchMoviesUseCaseRequestValue {
 protocol SearchMoviesUseCase {
     func execute(
         requestValue: SearchMoviesUseCaseRequestValue,
-    )
+    ) -> AnyPublisher<MoviesPage, Error>
 }
 
 final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
+
+
   
 
-    @Published var result: (movies: MoviesPage?, error: String?) = (nil, nil)
+//    @Published var result: (movies: MoviesPage?, error: String?) = (nil, nil)
     private var moviesSubscription: AnyCancellable?
     
     private let moviesRepository: MoviesRepository
@@ -32,20 +34,25 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
     }
     
     
-    func execute(requestValue: SearchMoviesUseCaseRequestValue) {
-        moviesSubscription = moviesRepository
+    func execute(requestValue: SearchMoviesUseCaseRequestValue) -> AnyPublisher<MoviesPage, any Error> {
+        moviesRepository
             .fetchMoviesList(query: requestValue.query, page: requestValue.page)
-            .sink{ [weak self] completion in
-                switch completion {
-                case .failure(let error):
-                    self?.result = (nil, error.localizedDescription)
-                default:
-                    break
-                }
-            } receiveValue: { [weak self] dataResponse in
-                self?.result = (dataResponse, nil)
-            }
-
     }
+    
+//    func execute(requestValue: SearchMoviesUseCaseRequestValue) {
+//        moviesSubscription = moviesRepositoryåå
+//            .fetchMoviesList(query: requestValue.query, page: requestValue.page)
+//            .sink{ [weak self] completion in
+//                switch completion {
+//                case .failure(let error):
+//                    self?.result = (nil, error.localizedDescription)
+//                default:
+//                    break
+//                }
+//            } receiveValue: { [weak self] dataResponse in
+//                self?.result = (dataResponse, nil)
+//            }
+//
+//    }
 
 }

@@ -28,23 +28,36 @@ final class DefaultMovieListViewModel {
     }
     
     private func addSubscripber() {
-        searchMoviesUseCase.$result.sink { [weak self] (moviesPage: MoviesPage?, error: String?) in
-            self?.isLoading = false
-            if let error = error {
-                self?.errorMessage = error
-                self?.movies = []
-            } else if let moviesPage = moviesPage {
-                self?.movies = moviesPage.movies
-                self?.errorMessage = nil
-            }
-        }
-        .store(in: &cancellables)
+//        searchMoviesUseCase.$result.sink { [weak self] (moviesPage: MoviesPage?, error: String?) in
+//            self?.isLoading = false
+//            if let error = error {
+//                self?.errorMessage = error
+//                self?.movies = []
+//            } else if let moviesPage = moviesPage {
+//                self?.movies = moviesPage.movies
+//                self?.errorMessage = nil
+//            }
+//        }
+//        .store(in: &cancellables)
     }
     
     func fetchMovie() {
         isLoading = true
         searchMoviesUseCase
             .execute(requestValue: .init(query: .init(query: "marvel"), page: 1))
+            .sink { [weak self] completion in
+                self?.isLoading = false
+                switch completion {
+                    case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                    default:
+                        break
+                    }
+            } receiveValue: { [weak self] moviesPage in
+                self?.movies = moviesPage.movies
+            }
+            .store(in: &cancellables)
+
     }
     
     // MARK: - Navigation Actions
