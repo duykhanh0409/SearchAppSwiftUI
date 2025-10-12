@@ -15,10 +15,15 @@ final class DefaultMovieListViewModel {
     var isLoading: Bool = false
     
     private let searchMoviesUseCase: DefaultSearchMoviesUseCase
+    private let router: MoviesRouter
     private var cancellables = Set<AnyCancellable>()
     
-    init(searchMoviesUseCase: DefaultSearchMoviesUseCase) {
+    init(
+        searchMoviesUseCase: DefaultSearchMoviesUseCase,
+        router: MoviesRouter
+    ) {
         self.searchMoviesUseCase = searchMoviesUseCase
+        self.router = router
         addSubscripber()
     }
     
@@ -40,5 +45,11 @@ final class DefaultMovieListViewModel {
         isLoading = true
         searchMoviesUseCase
             .execute(requestValue: .init(query: .init(query: "marvel"), page: 1))
+    }
+    
+    // MARK: - Navigation Actions
+    
+    func didSelectMovie(_ movie: Movie) {
+        router.navigateToMovieDetails(movie)
     }
 }

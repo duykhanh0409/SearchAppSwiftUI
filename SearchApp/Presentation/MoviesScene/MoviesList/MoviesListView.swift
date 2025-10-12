@@ -46,18 +46,26 @@ struct MoviesListView: View {
                     }
                 } else {
                     List(viewModel.movies) { movie in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text(movie.title ?? "Unknown")
-                                .font(.headline)
-                            
-                            if let overview = movie.overview {
-                                Text(overview)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
+                        Button(action: {
+                            viewModel.didSelectMovie(movie)
+                        }) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(movie.title ?? "Unknown")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                                
+                                if let overview = movie.overview {
+                                    Text(overview)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(2)
+                                }
                             }
+                            .padding(.vertical, 4)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                         }
-                        .padding(.vertical, 4)
+                        .buttonStyle(.plain)
                     }
                 }
             }

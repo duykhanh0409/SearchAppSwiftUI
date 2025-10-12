@@ -34,12 +34,19 @@ final class MoviesSceneDIContainer {
     }
     
     // MARK: - Movies List
-    func makeMoviesListViewModel() -> DefaultMovieListViewModel {
-        DefaultMovieListViewModel(searchMoviesUseCase: makeSearchMoviesUseCase())
+    func makeMoviesListViewModel(router: MoviesRouter) -> DefaultMovieListViewModel {
+        DefaultMovieListViewModel(
+            searchMoviesUseCase: makeSearchMoviesUseCase(),
+            router: router
+        )
     }
     
-    func makeMoviesListView() -> MoviesListView {
-        MoviesListView(viewModel: makeMoviesListViewModel())
+    func makeMoviesListView(router: MoviesRouter) -> MoviesListView {
+        MoviesListView(viewModel: makeMoviesListViewModel(router: router))
     }
     
+    // MARK: - Movie Details
+    func makeMovieDetailsView(movie: Movie) -> MovieDetailsView {
+        MovieDetailsView(movie: movie)
+    }
 }

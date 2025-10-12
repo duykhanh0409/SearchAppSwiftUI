@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Movie: Equatable, Identifiable {
+struct Movie: Equatable, Identifiable, Hashable {
     typealias Identifier = String
-    enum Genre {
+    enum Genre: Hashable {
         case adventure
         case scienceFiction
     }
