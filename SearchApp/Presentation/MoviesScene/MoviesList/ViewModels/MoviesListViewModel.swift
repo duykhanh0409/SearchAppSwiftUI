@@ -14,12 +14,12 @@ final class DefaultMovieListViewModel {
     var errorMessage: String?
     var isLoading: Bool = false
     
-    private let searchMoviesUseCase: DefaultSearchMoviesUseCase
+    private let searchMoviesUseCase: SearchMoviesUseCase
     private let router: MoviesRouter
     private var cancellables = Set<AnyCancellable>()
     
     init(
-        searchMoviesUseCase: DefaultSearchMoviesUseCase,
+        searchMoviesUseCase: SearchMoviesUseCase,
         router: MoviesRouter
     ) {
         self.searchMoviesUseCase = searchMoviesUseCase
