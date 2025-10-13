@@ -21,10 +21,6 @@ protocol SearchMoviesUseCase {
 
 final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
 
-
-  
-
-//    @Published var result: (movies: MoviesPage?, error: String?) = (nil, nil)
     private var moviesSubscription: AnyCancellable?
     
     private let moviesRepository: MoviesRepository
@@ -38,21 +34,5 @@ final class DefaultSearchMoviesUseCase: SearchMoviesUseCase {
         moviesRepository
             .fetchMoviesList(query: requestValue.query, page: requestValue.page)
     }
-    
-//    func execute(requestValue: SearchMoviesUseCaseRequestValue) {
-//        moviesSubscription = moviesRepositoryåå
-//            .fetchMoviesList(query: requestValue.query, page: requestValue.page)
-//            .sink{ [weak self] completion in
-//                switch completion {
-//                case .failure(let error):
-//                    self?.result = (nil, error.localizedDescription)
-//                default:
-//                    break
-//                }
-//            } receiveValue: { [weak self] dataResponse in
-//                self?.result = (dataResponse, nil)
-//            }
-//
-//    }
 
 }

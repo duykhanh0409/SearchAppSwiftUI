@@ -24,22 +24,8 @@ final class DefaultMovieListViewModel {
     ) {
         self.searchMoviesUseCase = searchMoviesUseCase
         self.router = router
-        addSubscripber()
     }
     
-    private func addSubscripber() {
-//        searchMoviesUseCase.$result.sink { [weak self] (moviesPage: MoviesPage?, error: String?) in
-//            self?.isLoading = false
-//            if let error = error {
-//                self?.errorMessage = error
-//                self?.movies = []
-//            } else if let moviesPage = moviesPage {
-//                self?.movies = moviesPage.movies
-//                self?.errorMessage = nil
-//            }
-//        }
-//        .store(in: &cancellables)
-    }
     
     func fetchMovie() {
         isLoading = true
