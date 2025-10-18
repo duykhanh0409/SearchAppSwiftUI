@@ -30,32 +30,5 @@ extension DefaultMoviesRepository: MoviesRepository {
             .map { $0.toDomain() }
             .eraseToAnyPublisher()
     }
-
-
-
-//    func fetch {
-//        // ở repository sẽ tương tác trực tiếp với API manager và return về 1 cái publisher(), ngày mai cần thêm các params tương tứng vào
-//    }
 }
 
-
-//class PhotoService {
-//    
-//    @Published var result: (photos: [PhotoModel]?, error: String?) = (nil, nil)
-//    private var photosSubscription: AnyCancellable?
-//    
-//    private let fetchDataPublisher: () -> AnyPublisher<[PhotoModel], Error>
-//    
-//    init(fetchDataPublisher: @escaping () -> AnyPublisher<[PhotoModel], Error> = {
-//        NetworkingManager.fetchWithCache(from: Constants.photosURLString)
-//            .decode(type: [PhotoModel].self, decoder: JSONDecoder())
-//            .eraseToAnyPublisher()
-//    }) {
-//        self.fetchDataPublisher = fetchDataPublisher
-//    }
-//
-    
-    //    func fetchPhotos() -> AnyPublisher<[PhotoModel], Error> {
-    //        return fetchDataPublisher()
-    //    }
-//}
