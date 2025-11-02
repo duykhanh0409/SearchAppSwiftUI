@@ -41,14 +41,14 @@ class SplashScreenController: UIViewController {
     
     var bannerImageView: UIImageView = {
         let object = UIImageView()
-        object.image = UIImage(named: "banner")
-        object.contentMode = .scaleAspectFit
+        object.image = UIImage(named: "Banner")
+        object.contentMode = .scaleToFill
         return object
     }()
     
     let titleLable: UILabel = {
         let object = UILabel()
-        object.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        object.font = UIFont.systemFont(ofSize: 44, weight: .bold)
         object.textAlignment = .center
         object.numberOfLines = 0
         return object
@@ -105,10 +105,9 @@ class SplashScreenController: UIViewController {
         
         // Banner Image Constraints
         bannerImageView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(40)
+            make.top.equalToSuperview().offset(64)
+            make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(40)
-            make.height.equalTo(250)
         }
         
         // Title Label Constraints
